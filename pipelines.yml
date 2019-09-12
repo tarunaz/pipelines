@@ -85,7 +85,7 @@ pipelines:
         configuration:
           dockerFileLocation: .
           dockerFileName: Dockerfile
-          dockerImageName: 34.66.110.173:8081/docker-local/gomicrosvc
+          dockerImageName: jfrog.local:5000/gomicrosvc
           dockerImageTag: $run_number
           inputResources:
             - name: go_gitRepo
