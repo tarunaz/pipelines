@@ -5,13 +5,6 @@ resources:
       path: sdemo/go-service
       gitProvider: demo_github
 
-  - name: testRes
-    type: BuildInfo
-    configuration:
-      sourceArtifactory: demoArt
-      buildName: svc_build
-      buildNumber: 1
-
   - name: svc_build_info
     type: BuildInfo
     configuration:
