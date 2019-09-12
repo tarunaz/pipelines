@@ -67,7 +67,7 @@ resources:
       siteName: "*"
       cityName: "*"
       countryCodes:
-        - "CN"
+#        - "CN"
         - "GB"
 
   - name: deploy_vm
