@@ -90,14 +90,14 @@ pipelines:
           inputResources:
             - name: go_gitRepo
           integrations:
-            - name: art
+            - name: demoArt
 
       - name: push_svc
         type: DockerPush
         configuration:
           targetRepository: docker-local
           integrations:
-            - name: art
+            - name: demoArt
           inputSteps:
             - name: bld_svc
 
