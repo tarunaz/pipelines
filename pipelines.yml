@@ -256,7 +256,7 @@ pipelines:
           integrations:
             - name: demoJenkins
 
-      - name: some_basg
+      - name: some_bash
         type: Bash
         configuration:
           inputSteps:
