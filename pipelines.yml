@@ -255,19 +255,15 @@ pipelines:
         configuration:
           integrations:
             - name: demoJenkins
-          outputResources:
-            - name: jenk_build_info
 
-      - name: promote_svc_build
-        type: PromoteBuild
+      - name: some_basg
+        type: Bash
         configuration:
-          targetRepository: demo-pipelines
-          integrations:
-            - name: demoArt
-          inputResources:
-            - name: jenk_build_info
-          outputResources:
-            - name: jenk_promoted_build_info
+          inputSteps:
+            - name: go_service_build
+        execution:
+          onStart:
+            - echo "did the jenkins job"
 
   - name: demo_release
     steps:
