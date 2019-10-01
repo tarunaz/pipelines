@@ -5,6 +5,20 @@ resources:
       path: sdemo/go-service
       gitProvider: demo_github
 
+  - name: jenk_build_info
+    type: BuildInfo
+    configuration:
+      sourceArtifactory: demoArt
+      buildName: svc_build
+      buildNumber: 1
+
+  - name: jenk_promoted_build_info
+    type: BuildInfo
+    configuration:
+      sourceArtifactory: demoArt
+      buildName: svc_build
+      buildNumber: 1
+
   - name: svc_build_info
     type: BuildInfo
     configuration:
@@ -232,6 +246,28 @@ pipelines:
             - name: app_build_info
           outputResources:
             - name: app_promoted_build_info
+
+
+  - name: demo_jenkins
+    steps:
+      - name: go_service_build
+        type: Jenkins
+        configuration:
+          integrations:
+            - name: demoJenkins
+          outputResources:
+            - name: jenk_build_info
+
+      - name: promote_svc_build
+        type: PromoteBuild
+        configuration:
+          targetRepository: demo-pipelines
+          integrations:
+            - name: demoArt
+          inputResources:
+            - name: jenk_build_info
+          outputResources:
+            - name: jenk_promoted_build_info
 
   - name: demo_release
     steps:
