@@ -247,23 +247,23 @@ pipelines:
           outputResources:
             - name: app_promoted_build_info
 
-
-  - name: demo_jenkins
-    steps:
-      - name: go_service_build
-        type: Jenkins
-        configuration:
-          integrations:
-            - name: demoJenkins
-
-      - name: some_bash
-        type: Bash
-        configuration:
-          inputSteps:
-            - name: go_service_build
-        execution:
-          onStart:
-            - echo "did the jenkins job"
+#
+#  - name: demo_jenkins
+#    steps:
+#      - name: go_service_build
+#        type: Jenkins
+#        configuration:
+#          integrations:
+#            - name: demoJenkins
+#
+#      - name: some_bash
+#        type: Bash
+#        configuration:
+#          inputSteps:
+#            - name: go_service_build
+#        execution:
+#          onStart:
+#            - echo "did the jenkins job"
 
   - name: demo_release
     steps:
