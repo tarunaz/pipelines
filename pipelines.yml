@@ -1,79 +1,79 @@
 resources:
-  - name: go_gitRepo
+  - name: gosvc_gitRepo
     type: GitRepo
     configuration:
       path: sdemo/go-service
       gitProvider: sdemo_github
 
-  - name: jenk_build_info
+  # - name: jenk_build_info
+  #   type: BuildInfo
+  #   configuration:
+  #     sourceArtifactory: demoArt
+  #     buildName: svc_build
+  #     buildNumber: 1
+  #
+  # - name: jenk_promoted_build_info
+  #   type: BuildInfo
+  #   configuration:
+  #     sourceArtifactory: demoArt
+  #     buildName: svc_build
+  #     buildNumber: 1
+
+  - name: gosvc_build_info
     type: BuildInfo
     configuration:
       sourceArtifactory: demoArt
       buildName: svc_build
       buildNumber: 1
 
-  - name: jenk_promoted_build_info
+  - name: gosvc_promoted_build_info
     type: BuildInfo
     configuration:
       sourceArtifactory: demoArt
       buildName: svc_build
       buildNumber: 1
 
-  - name: svc_build_info
-    type: BuildInfo
-    configuration:
-      sourceArtifactory: demoArt
-      buildName: svc_build
-      buildNumber: 1
-
-  - name: svc_promoted_build_info
-    type: BuildInfo
-    configuration:
-      sourceArtifactory: demoArt
-      buildName: svc_build
-      buildNumber: 1
-
-  - name: backend_gitRepo
+  - name: be_gitRepo
     type: GitRepo
     configuration:
       path: sdemo/java-backend
       gitProvider: sdemo_github
 
-  - name: app_build_info
+  - name: appl_build_info
     type: BuildInfo
     configuration:
       sourceArtifactory: demoArt
       buildName: backend_build
       buildNumber: 1
 
-  - name: app_promoted_build_info
+  - name: appl_promoted_build_info
     type: BuildInfo
     configuration:
       sourceArtifactory: demoArt
       buildName: backend_build
       buildNumber: 1
 
-  - name: frontend_gitRepo
+  - name: fe_gitRepo
     type: GitRepo
     configuration:
       path: sdemo/vue-frontend
       gitProvider: sdemo_github
 
-  - name: releaseBundle
+  - name: release_bundle
     type: ReleaseBundle
     configuration:
       sourceDistribution: demoDist
       name: demo_rb
       version: v1.0.0
 
-  - name: signedBundle
+  - name: signed_bundle
     type: ReleaseBundle
     configuration:
       sourceDistribution: demoDist
       name: demo_rb
       version: v1.0.0
 
-  - name: distributionRules
+  - name: distribution_rules
     type: DistributionRule
     configuration:
       sourceDistribution: demoDist
@@ -84,12 +84,12 @@ resources:
         - "CN"
         - "GB"
 
-  - name: deploy_vm
-    type: VmCluster
-    configuration:
-      sshKey: deploySsh
-      targets:
-        - 167.71.157.57
+  # - name: deploy_vm
+  #   type: VmCluster
+  #   configuration:
+  #     sshKey: deploySsh
+  #     targets:
+  #       - 167.71.157.57
 
 pipelines:
   - name: demo_gosvc
@@ -102,7 +102,7 @@ pipelines:
           dockerImageName: 35.192.150.93:8082/docker-local/gosvc
           dockerImageTag: ${run_number}
           inputResources:
-            - name: go_gitRepo
+            - name: gosvc_gitRepo
           integrations:
             - name: demoArt
 
@@ -121,7 +121,7 @@ pipelines:
           inputSteps:
             - name: push_svc
           outputResources:
-            - name: svc_build_info
+            - name: gosvc_build_info
 
       - name: promote_svc_build
         type: PromoteBuild
@@ -130,9 +130,9 @@ pipelines:
           integrations:
             - name: demoArt
           inputResources:
-            - name: svc_build_info
+            - name: gosvc_build_info
           outputResources:
-            - name: svc_promoted_build_info
+            - name: gosvc_promoted_build_info
 
   - name: demo_application
     steps:
@@ -144,7 +144,7 @@ pipelines:
           configFileLocation: .
           configFileName: mvn-art-config
           inputResources:
-            - name: backend_gitRepo
+            - name: be_gitRepo
           integrations:
             - name: demoArt
           runtime:
@@ -167,7 +167,7 @@ pipelines:
           sourceLocation: .
           repositoryName: npm-dev-virtual
           inputResources:
-            - name: frontend_gitRepo
+            - name: fe_gitRepo
           integrations:
             - name: demoArt
 
@@ -205,7 +205,7 @@ pipelines:
             dockerImageName: 35.192.150.93:8082/docker-local/app
             dockerImageTag: ${run_number}
           inputResources:
-            - name: backend_gitRepo
+            - name: be_gitRepo
               trigger: false
           inputSteps:
             - name: bld_backend
@@ -216,7 +216,7 @@ pipelines:
           onStart:
             - rm -rf $run_dir/workspace/jfrog
             - retry_command jfrog rt config --url $int_demoArt_url --user $int_demoArt_user --apikey $int_demoArt_apikey --interactive=false
-            - pushd $res_backend_gitRepo_resourcePath
+            - pushd $res_be_gitRepo_resourcePath
             - add_run_variables buildStepName=${step_name}
             - add_run_variables ${step_name}_buildNumber=${run_number}
             - add_run_variables ${step_name}_buildName=${pipeline_name}
@@ -231,7 +231,7 @@ pipelines:
           inputSteps:
             - name: build_app
           outputResources:
-            - name: app_build_info
+            - name: appl_build_info
 
       - name: promote_app_build
         type: PromoteBuild
@@ -240,9 +240,9 @@ pipelines:
           integrations:
             - name: demoArt
           inputResources:
-            - name: app_build_info
+            - name: appl_build_info
           outputResources:
-            - name: app_promoted_build_info
+            - name: appl_promoted_build_info
 
 #
 #  - name: demo_jenkins
@@ -273,12 +273,12 @@ pipelines:
           sign: false
           description: "some random test description"
           inputResources:
-            - name: svc_promoted_build_info
+            - name: gosvc_promoted_build_info
               trigger: false
-            - name: app_promoted_build_info
+            - name: appl_promoted_build_info
               trigger: false
           outputResources:
-            - name: releaseBundle
+            - name: release_bundle
           releaseNotes:
             syntax: markdown
             content: |
@@ -290,17 +290,17 @@ pipelines:
         type: SignReleaseBundle
         configuration:
           inputResources:
-            - name: releaseBundle
+            - name: release_bundle
           outputResources:
-            - name: signedBundle
+            - name: signed_bundle
 
       - name: distribute
         type: DistributeReleaseBundle
         configuration:
           dryRun: false
           inputResources:
-            - name: signedBundle
-            - name: distributionRules
+            - name: signed_bundle
+            - name: distribution_rules
 
 #      - name: deploy
 #        type: Bash
@@ -312,12 +312,12 @@ pipelines:
 #            - name: demoEdge
 #          inputResources:
 #            - name: deploy_vm
-#            - name: svc_promoted_build_info
+#            - name: gosvc_promoted_build_info
 #              trigger: false
-#            - name: app_promoted_build_info
+#            - name: appl_promoted_build_info
 #              trigger: false
 #          inputSteps:
 #            - name: distribute
 #        execution:
 #          onExecute:
-#            - ssh -i ~/.ssh/deploy_vm root@${res_deploy_vm_targets_0} sudo /root/deploy-to-prod-test.sh $artifactory_address $docker_repository $int_edge_art_apikey $res_app_promoted_build_info_buildNumber $res_svc_promoted_build_info_buildNumber
+#            - ssh -i ~/.ssh/deploy_vm root@${res_deploy_vm_targets_0} sudo /root/deploy-to-prod-test.sh $artifactory_address $docker_repository $int_edge_art_apikey $res_appl_promoted_build_info_buildNumber $res_gosvc_promoted_build_info_buildNumber
