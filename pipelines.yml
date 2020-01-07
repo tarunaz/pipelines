@@ -112,7 +112,7 @@ pipelines:
       - name: promote_svc_build
         type: PromoteBuild
         configuration:
-          targetRepository: promoted-demo-pipelines
+          targetRepository: demo-pipelines
           integrations:
             - name: demoArt
           inputResources:
@@ -188,7 +188,7 @@ pipelines:
         type: Bash
         configuration:
           environmentVariables:
-            dockerImageName: 35.192.150.93:8082/docker-local/app
+            dockerImageName: 34.74.146.128:8082/docker-local/app
             dockerImageTag: ${run_number}
           inputResources:
             - name: be_gitRepo
@@ -222,7 +222,7 @@ pipelines:
       - name: promote_app_build
         type: PromoteBuild
         configuration:
-          targetRepository: promoted-demo-pipelines
+          targetRepository: demo-pipelines
           integrations:
             - name: demoArt
           inputResources:
@@ -235,7 +235,7 @@ pipelines:
       - name: bundle
         type: CreateReleaseBundle
         configuration:
-          releaseBundleName: demo_release_bundle
+          releaseBundleName: demo_rb
           releaseBundleVersion: v1.0.${run_number}
           dryRun: false
           sign: false
