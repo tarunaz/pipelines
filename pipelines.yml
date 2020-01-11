@@ -257,8 +257,6 @@ pipelines:
       - name: demo_scan
         type: XrayScan
         configuration:
-          integrations:
-            - name: demoArt
           inputResources:
             - name: gosvc_promoted_build_info
             
