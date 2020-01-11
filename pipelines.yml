@@ -253,7 +253,15 @@ pipelines:
               ## Heading
                 * Bullet
                 * Points
-
+      
+      - name: demo_scan
+        type: XrayScan
+        configuration:
+          integrations:
+            - name: demoArt
+          inputResources:
+            - name: gosvc_promoted_build_info
+            
       - name: sign
         type: SignReleaseBundle
         configuration:
