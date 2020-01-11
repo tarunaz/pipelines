@@ -214,6 +214,7 @@ pipelines:
       - name: publish_app_build
         type: PublishBuildInfo
         configuration:
+          forceXrayScan: true
           inputSteps:
             - name: build_app
           outputResources:
@@ -230,11 +231,11 @@ pipelines:
           outputResources:
             - name: appl_promoted_build_info
       
-      - name: demo_scan
-        type: XrayScan
-        configuration:
-          inputResources:
-            - name: appl_promoted_build_info
+#       - name: demo_scan
+#         type: XrayScan
+#         configuration:
+#           inputResources:
+#             - name: appl_promoted_build_info
             
   - name: demo_release_mgmt
     steps:
