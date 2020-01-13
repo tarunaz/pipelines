@@ -25,13 +25,6 @@ resources:
       path: sdemo/java-backend
       gitProvider: sdemo_github
 
-  - name: fe_build_info
-    type: BuildInfo
-    configuration:
-      sourceArtifactory: demoArt
-      buildName: frontend_build
-      buildNumber: 1
-
   - name: appl_build_info_output
     type: BuildInfo
     configuration:
@@ -185,7 +178,6 @@ pipelines:
         type: NpmPublish
         configuration:
           repositoryName: npm-libs-local
-          autoPublishBuildInfo: true
           inputSteps:
             - name: pack_frontend
           integrations:
@@ -196,22 +188,6 @@ pipelines:
           onStart:
             - export inputNpmBuildStepName="bld_frontend"
 
-
-#       - name: publish_frontend_build
-#         type: PublishBuildInfo
-#         configuration:
-# #           forceXrayScan: true
-#           inputSteps:
-#             - name: publish_frontend
-#           outputResources:
-#             - name: fe_build_info
-
-#       - name: fe_scan
-#         type: XrayScan
-#         configuration:
-#           inputResources:
-#             - name: fe_build_info
-
       - name: build_app
         type: Bash
         configuration:
@@ -220,11 +196,10 @@ pipelines:
             dockerImageTag: ${run_number}
           inputResources:
             - name: be_gitRepo
-              trigger: false
-            - name: fe_build_info              
+              trigger: false 
           inputSteps:
             - name: bld_backend
-#            - name: publish_frontend
+            - name: publish_frontend
           integrations:
             - name: demoArt
         execution:
@@ -243,7 +218,7 @@ pipelines:
       - name: publish_app_build
         type: PublishBuildInfo
         configuration:
-#           forceXrayScan: true
+           forceXrayScan: true
           inputSteps:
             - name: build_app
           outputResources:
@@ -259,13 +234,7 @@ pipelines:
             - name: appl_build_info
           outputResources:
             - name: appl_promoted_build_info
-      
-      - name: demo_scan
-        type: XrayScan
-        configuration:
-          inputResources:
-            - name: appl_promoted_build_info
-            
+
   - name: demo_release_mgmt
     steps:
       - name: bundle
