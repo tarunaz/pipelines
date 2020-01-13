@@ -182,15 +182,11 @@ pipelines:
       - name: publish_frontend
         type: NpmPublish
         configuration:
-          autoPublishBuildInfo: true
-          forceXrayScan: true
           repositoryName: npm-libs-local
           inputSteps:
             - name: pack_frontend
           integrations:
             - name: demoArt
-          outputResources:
-            - name: appl_build_info_output
         execution:
           onStart:
             - export inputNpmBuildStepName="bld_frontend"
