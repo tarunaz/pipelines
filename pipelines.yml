@@ -197,6 +197,9 @@ pipelines:
         execution:
           onStart:
             - export inputNpmBuildStepName="bld_frontend"
+          outputResources:
+            - name: fe_build_info
+
 
 #       - name: publish_frontend_build
 #         type: PublishBuildInfo
@@ -222,9 +225,10 @@ pipelines:
           inputResources:
             - name: be_gitRepo
               trigger: false
+            - name: fe_build_info              
           inputSteps:
             - name: bld_backend
-            - name: publish_frontend
+#            - name: publish_frontend
           integrations:
             - name: demoArt
         execution:
