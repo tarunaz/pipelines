@@ -25,6 +25,13 @@ resources:
       path: sdemo/java-backend
       gitProvider: sdemo_github
 
+  - name: fe_build_info
+    type: BuildInfo
+    configuration:
+      sourceArtifactory: demoArt
+      buildName: frontend_build
+      buildNumber: 1
+
   - name: appl_build_info_output
     type: BuildInfo
     configuration:
@@ -152,7 +159,6 @@ pipelines:
             - javac -version
             - mvn --version
 
-
       - name: bld_frontend
         type: NpmBuild
         configuration:
@@ -178,6 +184,21 @@ pipelines:
             - pushd $tempStateLocation
             - npm run build
             - add_run_files $tempStateLocation/. npmBuildInputGitRepo
+
+      - name: publish_frontend_build
+        type: PublishBuildInfo
+        configuration:
+#           forceXrayScan: true
+          inputSteps:
+            - name: pack_frontend
+          outputResources:
+            - name: fe_build_info
+
+      - name: fe_scan
+        type: XrayScan
+        configuration:
+          inputResources:
+            - name: fe_build_info
 
       - name: publish_frontend
         type: NpmPublish
