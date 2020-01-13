@@ -189,6 +189,7 @@ pipelines:
         type: NpmPublish
         configuration:
           repositoryName: npm-libs-local
+          autoPublishBuildInfo: true
           inputSteps:
             - name: pack_frontend
           integrations:
@@ -197,20 +198,20 @@ pipelines:
           onStart:
             - export inputNpmBuildStepName="bld_frontend"
 
-      - name: publish_frontend_build
-        type: PublishBuildInfo
-        configuration:
-#           forceXrayScan: true
-          inputSteps:
-            - name: publish_frontend
-          outputResources:
-            - name: fe_build_info
+#       - name: publish_frontend_build
+#         type: PublishBuildInfo
+#         configuration:
+# #           forceXrayScan: true
+#           inputSteps:
+#             - name: publish_frontend
+#           outputResources:
+#             - name: fe_build_info
 
-      - name: fe_scan
-        type: XrayScan
-        configuration:
-          inputResources:
-            - name: fe_build_info
+#       - name: fe_scan
+#         type: XrayScan
+#         configuration:
+#           inputResources:
+#             - name: fe_build_info
 
       - name: build_app
         type: Bash
@@ -223,7 +224,7 @@ pipelines:
               trigger: false
           inputSteps:
             - name: bld_backend
-            - name: fe_scan
+            - name: publish_frontend
           integrations:
             - name: demoArt
         execution:
