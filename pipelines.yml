@@ -25,6 +25,13 @@ resources:
       path: sdemo/java-backend
       gitProvider: sdemo_github
 
+  - name: appl_build_info_output
+    type: BuildInfo
+    configuration:
+      sourceArtifactory: demoArt
+      buildName: backend_build
+      buildNumber: 1
+      
   - name: appl_build_info
     type: BuildInfo
     configuration:
@@ -182,10 +189,12 @@ pipelines:
             - name: pack_frontend
           integrations:
             - name: demoArt
+          outputResources:
+            - name: appl_build_info_output
         execution:
           onStart:
             - export inputNpmBuildStepName="bld_frontend"
-
+         
       - name: build_app
         type: Bash
         configuration:
