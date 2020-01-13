@@ -194,11 +194,11 @@ pipelines:
             - name: pack_frontend
           integrations:
             - name: demoArt
+          outputResources:
+            - name: fe_build_info            
         execution:
           onStart:
             - export inputNpmBuildStepName="bld_frontend"
-          outputResources:
-            - name: fe_build_info
 
 
 #       - name: publish_frontend_build
