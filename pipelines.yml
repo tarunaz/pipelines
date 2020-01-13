@@ -110,26 +110,14 @@ pipelines:
         type: DockerPush
         configuration:
           targetRepository: docker-local
+          forceXrayScan: true
+          autoPublishBuildInfo: true
           integrations:
             - name: demoArt
           inputSteps:
             - name: bld_svc
-
-      - name: publish_svc_build
-        type: PublishBuildInfo
-        configuration:
-          inputSteps:
-            - name: push_svc
           outputResources:
             - name: gosvc_build_info
-
-      - name: svc_scan
-        type: XrayScan
-        configuration:
-          inputResources:
-            - name: gosvc_build_info
-          outResources:
-            - name: fe_build_info
             
       - name: promote_svc_build
         type: PromoteBuild
@@ -138,9 +126,7 @@ pipelines:
           integrations:
             - name: demoArt
           inputResources:
-            - name: fe_build_info
-          inputSteps:
-            - name: svc_scan
+            - name: gosvc_build_info
           outputResources:
             - name: gosvc_promoted_build_info
 
