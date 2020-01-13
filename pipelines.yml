@@ -185,21 +185,6 @@ pipelines:
             - npm run build
             - add_run_files $tempStateLocation/. npmBuildInputGitRepo
 
-      - name: publish_frontend_build
-        type: PublishBuildInfo
-        configuration:
-#           forceXrayScan: true
-          inputSteps:
-            - name: pack_frontend
-          outputResources:
-            - name: fe_build_info
-
-      - name: fe_scan
-        type: XrayScan
-        configuration:
-          inputResources:
-            - name: fe_build_info
-
       - name: publish_frontend
         type: NpmPublish
         configuration:
@@ -211,7 +196,22 @@ pipelines:
         execution:
           onStart:
             - export inputNpmBuildStepName="bld_frontend"
-         
+
+      - name: publish_frontend_build
+        type: PublishBuildInfo
+        configuration:
+#           forceXrayScan: true
+          inputSteps:
+            - name: publish_frontend
+          outputResources:
+            - name: fe_build_info
+
+      - name: fe_scan
+        type: XrayScan
+        configuration:
+          inputResources:
+            - name: fe_build_info
+
       - name: build_app
         type: Bash
         configuration:
@@ -223,7 +223,7 @@ pipelines:
               trigger: false
           inputSteps:
             - name: bld_backend
-            - name: publish_frontend
+            - name: fe_scan
           integrations:
             - name: demoArt
         execution:
