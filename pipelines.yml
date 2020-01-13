@@ -175,6 +175,8 @@ pipelines:
       - name: publish_frontend
         type: NpmPublish
         configuration:
+          autoPublishBuildInfo: true
+          forceXrayScan: true
           repositoryName: npm-libs-local
           inputSteps:
             - name: pack_frontend
