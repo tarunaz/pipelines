@@ -128,15 +128,17 @@ pipelines:
         configuration:
           inputResources:
             - name: gosvc_build_info
-
+          outResources:
+            - name: fe_build_info
+            
       - name: promote_svc_build
         type: PromoteBuild
         configuration:
           targetRepository: demo-pipelines
           integrations:
             - name: demoArt
-#           inputResources:
-#             - name: gosvc_build_info
+          inputResources:
+            - name: fe_build_info
           inputSteps:
             - name: svc_scan
           outputResources:
