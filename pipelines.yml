@@ -92,7 +92,7 @@ pipelines:
         configuration:
           dockerFileLocation: .
           dockerFileName: Dockerfile
-          dockerImageName: 34.74.146.128:8082/docker-local/gosvc
+          dockerImageName: 34.68.55.176:8082/docker-local/gosvc
           dockerImageTag: ${run_number}
           inputResources:
             - name: gosvc_gitRepo
@@ -190,7 +190,7 @@ pipelines:
         type: Bash
         configuration:
           environmentVariables:
-            dockerImageName: 34.74.146.128:8082/docker-local/app
+            dockerImageName: 34.68.55.176:8082/docker-local/app
             dockerImageTag: ${run_number}
           inputResources:
             - name: be_gitRepo
@@ -210,7 +210,7 @@ pipelines:
             - add_run_variables ${step_name}_buildName=${pipeline_name}
             - docker build --pull --no-cache -t $dockerImageName:$dockerImageTag --build-arg REGISTRY=${int_demoArt_url} .
             - jfrog rt bce $pipeline_name $run_number
-            - jfrog rt docker-push 34.74.146.128:8082/docker-local/app:$run_number docker-local --build-name=$pipeline_name --build-number=$run_number
+            - jfrog rt docker-push 34.68.55.176:8082/docker-local/app:$run_number docker-local --build-name=$pipeline_name --build-number=$run_number
             - add_run_files /tmp/jfrog/. jfrog
 
       - name: publish_app_build
