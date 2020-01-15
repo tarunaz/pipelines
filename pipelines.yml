@@ -216,7 +216,7 @@ pipelines:
       - name: publish_app_build
         type: PublishBuildInfo
         configuration:
-          forceXrayScan: true
+          forceXrayScan: false
           inputSteps:
             - name: build_app
           outputResources:
