@@ -103,7 +103,7 @@ pipelines:
         type: DockerPush
         configuration:
           targetRepository: docker-local
-          forceXrayScan: false
+          forceXrayScan: true
           autoPublishBuildInfo: true
           integrations:
             - name: demoArt
@@ -216,7 +216,7 @@ pipelines:
       - name: publish_app_build
         type: PublishBuildInfo
         configuration:
-          forceXrayScan: false
+          forceXrayScan: true
           inputSteps:
             - name: build_app
           outputResources:
