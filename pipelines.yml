@@ -31,7 +31,7 @@ resources:
       sourceArtifactory: demoArt
       buildName: backend_build
       buildNumber: 1
-      
+
   - name: appl_build_info
     type: BuildInfo
     configuration:
@@ -77,12 +77,12 @@ resources:
         - "CN"
         - "GB"
 
-  # - name: deploy_vm
-  #   type: VmCluster
-  #   configuration:
-  #     sshKey: deploySsh
-  #     targets:
-  #       - 167.71.157.57
+  - name: deploy_vm
+    type: VmCluster
+    configuration:
+      sshKey: demo_ssh
+      targets:
+        - 130.211.121.141
 
 pipelines:
   - name: demo_gosvc
@@ -111,7 +111,7 @@ pipelines:
             - name: bld_svc
           outputResources:
             - name: gosvc_build_info
-            
+
       - name: promote_svc_build
         type: PromoteBuild
         configuration:
@@ -194,7 +194,7 @@ pipelines:
             dockerImageTag: ${run_number}
           inputResources:
             - name: be_gitRepo
-              trigger: false 
+              trigger: false
           inputSteps:
             - name: bld_backend
             - name: publish_frontend
@@ -256,7 +256,7 @@ pipelines:
               ## Heading
                 * Bullet
                 * Points
-            
+
       - name: sign
         type: SignReleaseBundle
         configuration:
@@ -273,22 +273,22 @@ pipelines:
             - name: signed_bundle
             - name: distribution_rules
 
-#      - name: deploy
-#        type: Bash
-#        configuration:
-#          environmentVariables:
-#            docker_repository: demoPipelines
-#            artifactory_address: 35.224.208.129:8090
-#          integrations:
-#            - name: demoEdge
-#          inputResources:
-#            - name: deploy_vm
-#            - name: gosvc_promoted_build_info
-#              trigger: false
-#            - name: appl_promoted_build_info
-#              trigger: false
-#          inputSteps:
-#            - name: distribute
-#        execution:
-#          onExecute:
-#            - ssh -i ~/.ssh/deploy_vm root@${res_deploy_vm_targets_0} sudo /root/deploy-to-prod-test.sh $artifactory_address $docker_repository $int_edge_art_apikey $res_appl_promoted_build_info_buildNumber $res_gosvc_promoted_build_info_buildNumber
+      - name: deploy
+        type: Bash
+        configuration:
+          environmentVariables:
+            docker_repository: demoPipelines
+            artifactory_address: 35.224.208.129:8090
+          integrations:
+            - name: demoEdge
+          inputResources:
+            - name: deploy_vm
+            - name: gosvc_promoted_build_info
+              trigger: false
+            - name: appl_promoted_build_info
+              trigger: false
+          inputSteps:
+            - name: distribute
+        execution:
+          onExecute:
+            - ssh -i ~/.ssh/deploy_vm root@${res_deploy_vm_targets_0} sudo /root/deploy-to-prod-test.sh $artifactory_address $docker_repository $int_edge_art_apikey $res_appl_promoted_build_info_buildNumber $res_gosvc_promoted_build_info_buildNumber
