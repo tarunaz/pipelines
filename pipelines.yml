@@ -279,8 +279,8 @@ pipelines:
           environmentVariables:
             docker_repository: demoPipelines
             artifactory_address: 35.224.208.129:8090
-          # integrations:
-          #   - name: demoEdge
+          integrations:
+            - name: edge_art
           inputResources:
             - name: deploy_vm
             - name: gosvc_promoted_build_info
