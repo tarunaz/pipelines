@@ -103,7 +103,7 @@ pipelines:
         type: DockerPush
         configuration:
           targetRepository: docker-local
-          forceXrayScan: true
+          forceXrayScan: flase
           autoPublishBuildInfo: true
           integrations:
             - name: demoArt
