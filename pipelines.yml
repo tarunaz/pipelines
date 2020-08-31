@@ -97,7 +97,7 @@ pipelines:
           inputResources:
             - name: gosvc_gitRepo
           integrations:
-            - name: demoArt
+            - name: demo_art
 
       - name: push_svc
         type: DockerPush
@@ -106,7 +106,7 @@ pipelines:
           #forceXrayScan: true
           autoPublishBuildInfo: true
           integrations:
-            - name: demoArt
+            - name: demo_art
           inputSteps:
             - name: bld_svc
           outputResources:
@@ -117,7 +117,7 @@ pipelines:
         configuration:
           targetRepository: demo-pipelines
           integrations:
-            - name: demoArt
+            - name: demo_art
           inputResources:
             - name: gosvc_build_info
           outputResources:
@@ -135,7 +135,7 @@ pipelines:
           inputResources:
             - name: be_gitRepo
           integrations:
-            - name: demoArt
+            - name: demo_art
           runtime:
             type: image
             image:
@@ -157,7 +157,7 @@ pipelines:
           inputResources:
             - name: fe_gitRepo
           integrations:
-            - name: demoArt
+            - name: demo_art
 
       - name: pack_frontend
         type: Bash
@@ -165,7 +165,7 @@ pipelines:
           inputSteps:
             - name: bld_frontend
           integrations:
-            - name: demoArt
+            - name: demo_art
         execution:
           onStart:
             - export tempStateLocation="$step_tmp_dir/npmSourceState"
@@ -181,7 +181,7 @@ pipelines:
           inputSteps:
             - name: pack_frontend
           integrations:
-            - name: demoArt
+            - name: demo_art
         execution:
           onStart:
             - export inputNpmBuildStepName="bld_frontend"
@@ -199,7 +199,7 @@ pipelines:
             - name: bld_backend
             - name: publish_frontend
           integrations:
-            - name: demoArt
+            - name: demo_art
         execution:
           onStart:
             - rm -rf $run_dir/workspace/jfrog
@@ -227,7 +227,7 @@ pipelines:
         configuration:
           targetRepository: demo-pipelines
           integrations:
-            - name: demoArt
+            - name: demo_art
           inputResources:
             - name: appl_build_info
           outputResources:
