@@ -3,19 +3,19 @@ resources:
     type: GitRepo
     configuration:
       path: sdemo/go-service
-      gitProvider: sdemo_github
+      gitProvider: demo_github
 
   - name: gosvc_build_info
     type: BuildInfo
     configuration:
-      sourceArtifactory: demoArt
+      sourceArtifactory: demo_art
       buildName: svc_build
       buildNumber: 1
 
   - name: gosvc_promoted_build_info
     type: BuildInfo
     configuration:
-      sourceArtifactory: demoArt
+      sourceArtifactory: demo_art
       buildName: svc_build
       buildNumber: 1
 
@@ -23,26 +23,26 @@ resources:
     type: GitRepo
     configuration:
       path: sdemo/java-backend
-      gitProvider: sdemo_github
+      gitProvider: demo_github
 
   - name: appl_build_info_output
     type: BuildInfo
     configuration:
-      sourceArtifactory: demoArt
+      sourceArtifactory: demo_art
       buildName: backend_build
       buildNumber: 1
 
   - name: appl_build_info
     type: BuildInfo
     configuration:
-      sourceArtifactory: demoArt
+      sourceArtifactory: demo_art
       buildName: backend_build
       buildNumber: 1
 
   - name: appl_promoted_build_info
     type: BuildInfo
     configuration:
-      sourceArtifactory: demoArt
+      sourceArtifactory: demo_art
       buildName: backend_build
       buildNumber: 1
 
@@ -50,39 +50,39 @@ resources:
     type: GitRepo
     configuration:
       path: sdemo/vue-frontend
-      gitProvider: sdemo_github
+      gitProvider: demo_github
 
-  - name: release_bundle
-    type: ReleaseBundle
-    configuration:
-      sourceDistribution: demoDist
-      name: demo_rb
-      version: v1.0.0
+#   - name: release_bundle
+#     type: ReleaseBundle
+#     configuration:
+#       sourceDistribution: demoDist
+#       name: demo_rb
+#       version: v1.0.0
 
-  - name: signed_bundle
-    type: ReleaseBundle
-    configuration:
-      sourceDistribution: demoDist
-      name: demo_rb
-      version: v1.0.0
+#   - name: signed_bundle
+#     type: ReleaseBundle
+#     configuration:
+#       sourceDistribution: demoDist
+#       name: demo_rb
+#       version: v1.0.0
 
-  - name: distribution_rules
-    type: DistributionRule
-    configuration:
-      sourceDistribution: demoDist
-      serviceName: "*"
-      siteName: "*"
-      cityName: "*"
-      countryCodes:
-        - "CN"
-        - "GB"
+#   - name: distribution_rules
+#     type: DistributionRule
+#     configuration:
+#       sourceDistribution: demoDist
+#       serviceName: "*"
+#       siteName: "*"
+#       cityName: "*"
+#       countryCodes:
+#         - "CN"
+#         - "GB"
 
-  - name: deploy_vm
-    type: VmCluster
-    configuration:
-      sshKey: demo_ssh
-      targets:
-        - 130.211.121.141
+#   - name: deploy_vm
+#     type: VmCluster
+#     configuration:
+#       sshKey: demo_ssh
+#       targets:
+#         - 130.211.121.141
 
 pipelines:
   - name: demo_gosvc
@@ -233,62 +233,62 @@ pipelines:
           outputResources:
             - name: appl_promoted_build_info
 
-  - name: demo_release_mgmt
-    steps:
-      - name: bundle
-        type: CreateReleaseBundle
-        configuration:
-          releaseBundleName: demo_rb
-          releaseBundleVersion: v1.0.${run_number}
-          dryRun: false
-          sign: false
-          description: "some random test description"
-          inputResources:
-            - name: gosvc_promoted_build_info
-              trigger: false
-            - name: appl_promoted_build_info
-              trigger: false
-          outputResources:
-            - name: release_bundle
-          releaseNotes:
-            syntax: markdown
-            content: |
-              ## Heading
-                * Bullet
-                * Points
+#   - name: demo_release_mgmt
+#     steps:
+#       - name: bundle
+#         type: CreateReleaseBundle
+#         configuration:
+#           releaseBundleName: demo_rb
+#           releaseBundleVersion: v1.0.${run_number}
+#           dryRun: false
+#           sign: false
+#           description: "some random test description"
+#           inputResources:
+#             - name: gosvc_promoted_build_info
+#               trigger: false
+#             - name: appl_promoted_build_info
+#               trigger: false
+#           outputResources:
+#             - name: release_bundle
+#           releaseNotes:
+#             syntax: markdown
+#             content: |
+#               ## Heading
+#                 * Bullet
+#                 * Points
 
-      - name: sign
-        type: SignReleaseBundle
-        configuration:
-          inputResources:
-            - name: release_bundle
-          outputResources:
-            - name: signed_bundle
+#       - name: sign
+#         type: SignReleaseBundle
+#         configuration:
+#           inputResources:
+#             - name: release_bundle
+#           outputResources:
+#             - name: signed_bundle
 
-      - name: distribute
-        type: DistributeReleaseBundle
-        configuration:
-          dryRun: false
-          inputResources:
-            - name: signed_bundle
-            - name: distribution_rules
+#       - name: distribute
+#         type: DistributeReleaseBundle
+#         configuration:
+#           dryRun: false
+#           inputResources:
+#             - name: signed_bundle
+#             - name: distribution_rules
 
-      - name: deploy
-        type: Bash
-        configuration:
-          environmentVariables:
-            docker_repository: demo-pipelines
-            artifactory_address: 35.192.24.86:8082
-          integrations:
-            - name: edge_art
-          inputResources:
-            - name: deploy_vm
-            - name: gosvc_promoted_build_info
-              trigger: false
-            - name: appl_promoted_build_info
-              trigger: false
-          inputSteps:
-            - name: distribute
-        execution:
-          onExecute:
-            - ssh -i ~/.ssh/deploy_vm sdemo@${res_deploy_vm_targets_0} sudo /home/sdemo/deploy-to-prod-test.sh $artifactory_address $docker_repository $int_edge_art_apikey $res_appl_promoted_build_info_buildNumber $res_gosvc_promoted_build_info_buildNumber
+#       - name: deploy
+#         type: Bash
+#         configuration:
+#           environmentVariables:
+#             docker_repository: demo-pipelines
+#             artifactory_address: 35.192.24.86:8082
+#           integrations:
+#             - name: edge_art
+#           inputResources:
+#             - name: deploy_vm
+#             - name: gosvc_promoted_build_info
+#               trigger: false
+#             - name: appl_promoted_build_info
+#               trigger: false
+#           inputSteps:
+#             - name: distribute
+#         execution:
+#           onExecute:
+#             - ssh -i ~/.ssh/deploy_vm sdemo@${res_deploy_vm_targets_0} sudo /home/sdemo/deploy-to-prod-test.sh $artifactory_address $docker_repository $int_edge_art_apikey $res_appl_promoted_build_info_buildNumber $res_gosvc_promoted_build_info_buildNumber
