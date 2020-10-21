@@ -153,7 +153,7 @@ pipelines:
         configuration:
           npmArgs: --no-progress --no-audit
           sourceLocation: .
-          repositoryName: npm-local
+          repositoryName: npm-virtual
           inputResources:
             - name: fe_gitRepo
           integrations:
