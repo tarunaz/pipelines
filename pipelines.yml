@@ -92,7 +92,8 @@ pipelines:
         configuration:
           dockerFileLocation: .
           dockerFileName: Dockerfile
-          dockerImageName: avinci-docker-local.jfrog.io/gosvc
+#           dockerImageName: avinci-docker-local.jfrog.io/gosvc
+          dockerImageName: 146.148.104.158:8082/docker-local/gosvc
           dockerImageTag: ${run_number}
           inputResources:
             - name: gosvc_gitRepo
@@ -190,7 +191,8 @@ pipelines:
         type: Bash
         configuration:
           environmentVariables:
-            dockerImageName: avinci-docker-local.jfrog.io/app
+#             dockerImageName: avinci-docker-local.jfrog.io/app
+            dockerImageName: 146.148.104.158:8082/docker-local/app
             dockerImageTag: ${run_number}
           inputResources:
             - name: be_gitRepo
@@ -203,14 +205,14 @@ pipelines:
         execution:
           onStart:
             - rm -rf $run_dir/workspace/jfrog
-            - retry_command jfrog rt config --url $int_demoArt_url --user $int_demoArt_user --apikey $int_demoArt_apikey --interactive=false
+            - retry_command jfrog rt config --url $int_demo_art_url --user $int_demo_art_user --apikey $int_demo_art_apikey --interactive=false
             - pushd $res_be_gitRepo_resourcePath
             - add_run_variables buildStepName=${step_name}
             - add_run_variables ${step_name}_buildNumber=${run_number}
             - add_run_variables ${step_name}_buildName=${pipeline_name}
-            - docker build --pull --no-cache -t $dockerImageName:$dockerImageTag --build-arg REGISTRY=${int_demoArt_url} .
+            - docker build --pull --no-cache -t $dockerImageName:$dockerImageTag --build-arg REGISTRY=${int_demo_art_url} .
             - jfrog rt bce $pipeline_name $run_number
-            - jfrog rt docker-push avinci-docker-local.jfrog.io/app:$run_number docker-local --build-name=$pipeline_name --build-number=$run_number
+            - jfrog rt docker-push $dockerImageName:$dockerImageTag docker-local --build-name=$pipeline_name --build-number=$run_number
             - add_run_files /tmp/jfrog/. jfrog
 
       - name: publish_app_build
