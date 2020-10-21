@@ -280,7 +280,7 @@ pipelines:
         configuration:
           environmentVariables:
             docker_repository: demo-pipelines
-            artifactory_address: 146.148.104.158/:8082
+            artifactory_address: 146.148.104.158:8082
           integrations:
             - name: edge_art
           inputResources:
