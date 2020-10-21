@@ -279,8 +279,8 @@ pipelines:
         type: Bash
         configuration:
           environmentVariables:
-            docker_repository: demo-pipelines
-            artifactory_address: 146.148.104.158:8082
+            docker_repository: docker
+            artifactory_address: 35.222.179.206:8082
           integrations:
             - name: edge_art
           inputResources:
