@@ -219,8 +219,6 @@ pipelines:
       - name: publish_app_build
         type: PublishBuildInfo
         configuration:
-          forceXrayScan: true
-          failOnScan: true
           inputSteps:
             - name: build_app
           outputResources:
