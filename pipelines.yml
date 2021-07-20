@@ -107,7 +107,7 @@ pipelines:
           failOnScan: true
           autoPublishBuildInfo: true
           integrations:
-            - name: tarunm_art
+            - name: Artifactory
           inputSteps:
             - name: bld_svc
           outputResources:
@@ -118,7 +118,7 @@ pipelines:
         configuration:
           targetRepository: docker
           integrations:
-            - name: tarunm_art
+            - name: Artifactory
           inputResources:
             - name: gosvc_build_info
           outputResources:
@@ -136,7 +136,7 @@ pipelines:
           inputResources:
             - name: be_gitRepo
           integrations:
-            - name: tarunm_art
+            - name: Artifactory
           runtime:
             type: image
             image:
@@ -158,7 +158,7 @@ pipelines:
           inputResources:
             - name: fe_gitRepo
           integrations:
-            - name: tarunm_art
+            - name: Artifactory
 
       - name: pack_frontend
         type: Bash
@@ -166,7 +166,7 @@ pipelines:
           inputSteps:
             - name: bld_frontend
           integrations:
-            - name: tarunm_art
+            - name: Artifactory
         execution:
           onStart:
             - export tempStateLocation="$step_tmp_dir/npmSourceState"
@@ -182,7 +182,7 @@ pipelines:
           inputSteps:
             - name: pack_frontend
           integrations:
-            - name: tarunm_art
+            - name: Artifactory
         execution:
           onStart:
             - export inputNpmBuildStepName="bld_frontend"
@@ -200,7 +200,7 @@ pipelines:
             - name: bld_backend
             - name: publish_frontend
           integrations:
-            - name: tarunm_art
+            - name: Artifactory
         execution:
           onStart:
             - rm -rf $run_dir/workspace/jfrog
