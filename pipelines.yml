@@ -275,13 +275,9 @@ pipelines:
           integrations:
             - name: Edge2
           inputResources:
-            - name: deploy_vm
             - name: gosvc_promoted_build_info
               trigger: false
             - name: appl_promoted_build_info
               trigger: false
           inputSteps:
             - name: distribute
-        execution:
-          onExecute:
-            - ssh -i ~/.ssh/deploy_vm sdemo@${res_deploy_vm_targets_0} sudo /home/sdemo/deploy-to-prod-test.sh $artifactory_address $docker_repository $int_edge_art_apikey $res_appl_promoted_build_info_buildNumber $res_gosvc_promoted_build_info_buildNumber
