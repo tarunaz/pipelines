@@ -159,7 +159,7 @@ pipelines:
           inputResources:
             - name: fe_gitRepo
           integrations:
-            - name: demo_art
+            - name: tarunm_art
 
       - name: pack_frontend
         type: Bash
@@ -167,7 +167,7 @@ pipelines:
           inputSteps:
             - name: bld_frontend
           integrations:
-            - name: demo_art
+            - name: tarunm_art
         execution:
           onStart:
             - export tempStateLocation="$step_tmp_dir/npmSourceState"
@@ -202,7 +202,7 @@ pipelines:
             - name: bld_backend
             - name: publish_frontend
           integrations:
-            - name: demo_art
+            - name: tarunm_art
         execution:
           onStart:
             - rm -rf $run_dir/workspace/jfrog
