@@ -92,13 +92,12 @@ pipelines:
         configuration:
           dockerFileLocation: .
           dockerFileName: Dockerfile
-#           dockerImageName: avinci-docker-local.jfrog.io/gosvc
-          dockerImageName: 34.145.57.107:8082/docker-local/gosvc
+          dockerImageName: 34.145.57.107:8082/tarunm-docker-dev-local/gosvc
           dockerImageTag: ${run_number}
           inputResources:
             - name: gosvc_gitRepo
           integrations:
-            - name: tarunm_art
+            - name: Artifactory
 
       - name: push_svc
         type: DockerPush
@@ -192,8 +191,7 @@ pipelines:
         type: Bash
         configuration:
           environmentVariables:
-#             dockerImageName: avinci-docker-local.jfrog.io/app
-            dockerImageName: 34.145.57.107:8082/docker-local/app
+            dockerImageName: 34.145.57.107:8082/tarunm-docker-dev-local/app
             dockerImageTag: ${run_number}
           inputResources:
             - name: be_gitRepo
@@ -227,7 +225,7 @@ pipelines:
       - name: promote_app_build
         type: PromoteBuild
         configuration:
-          targetRepository: docker
+          targetRepository: tarunm-docker-qa-local
           integrations:
             - name: Artifactory
           inputResources:
@@ -279,10 +277,10 @@ pipelines:
         type: Bash
         configuration:
           environmentVariables:
-            docker_repository: docker
+            docker_repository: tarunm-docker-qa-local
             artifactory_address: 35.222.179.206:8082
           integrations:
-            - name: edge_art
+            - name: Edge2
           inputResources:
             - name: deploy_vm
             - name: gosvc_promoted_build_info
