@@ -22,7 +22,7 @@ resources:
   - name: be_gitRepo
     type: GitRepo
     configuration:
-      path: sdemo/java-backend
+      path: tarunaz/java-backend
       gitProvider: tarunm_github
 
   - name: appl_build_info_output
