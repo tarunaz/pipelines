@@ -2,20 +2,20 @@ resources:
   - name: gosvc_gitRepo
     type: GitRepo
     configuration:
-      path: sdemo/go-service
-      gitProvider: demo_github
+      path: tarunaz/go-service
+      gitProvider: tarunm_github
 
   - name: gosvc_build_info
     type: BuildInfo
     configuration:
-      sourceArtifactory: demo_art
+      sourceArtifactory: tarunm_art
       buildName: svc_build
       buildNumber: 1
 
   - name: gosvc_promoted_build_info
     type: BuildInfo
     configuration:
-      sourceArtifactory: demo_art
+      sourceArtifactory: tarunm_art
       buildName: svc_build
       buildNumber: 1
 
@@ -23,34 +23,34 @@ resources:
     type: GitRepo
     configuration:
       path: sdemo/java-backend
-      gitProvider: demo_github
+      gitProvider: tarunm_github
 
   - name: appl_build_info_output
     type: BuildInfo
     configuration:
-      sourceArtifactory: demo_art
+      sourceArtifactory: tarunm_art
       buildName: backend_build
       buildNumber: 1
 
   - name: appl_build_info
     type: BuildInfo
     configuration:
-      sourceArtifactory: demo_art
+      sourceArtifactory: tarunm_art
       buildName: backend_build
       buildNumber: 1
 
   - name: appl_promoted_build_info
     type: BuildInfo
     configuration:
-      sourceArtifactory: demo_art
+      sourceArtifactory: tarunm_art
       buildName: backend_build
       buildNumber: 1
 
   - name: fe_gitRepo
     type: GitRepo
     configuration:
-      path: sdemo/vue-frontend
-      gitProvider: demo_github
+      path: tarunaz/vue-frontend
+      gitProvider: tarunm_github
 
   - name: release_bundle
     type: ReleaseBundle
@@ -93,12 +93,12 @@ pipelines:
           dockerFileLocation: .
           dockerFileName: Dockerfile
 #           dockerImageName: avinci-docker-local.jfrog.io/gosvc
-          dockerImageName: 146.148.104.158:8082/docker-local/gosvc
+          dockerImageName: 34.145.57.107:8082/docker-local/gosvc
           dockerImageTag: ${run_number}
           inputResources:
             - name: gosvc_gitRepo
           integrations:
-            - name: demo_art
+            - name: tarunm_art
 
       - name: push_svc
         type: DockerPush
@@ -108,7 +108,7 @@ pipelines:
           failOnScan: true
           autoPublishBuildInfo: true
           integrations:
-            - name: demo_art
+            - name: tarunm_art
           inputSteps:
             - name: bld_svc
           outputResources:
@@ -119,7 +119,7 @@ pipelines:
         configuration:
           targetRepository: docker
           integrations:
-            - name: demo_art
+            - name: tarunm_art
           inputResources:
             - name: gosvc_build_info
           outputResources:
@@ -137,7 +137,7 @@ pipelines:
           inputResources:
             - name: be_gitRepo
           integrations:
-            - name: demo_art
+            - name: tarunm_art
           runtime:
             type: image
             image:
@@ -183,7 +183,7 @@ pipelines:
           inputSteps:
             - name: pack_frontend
           integrations:
-            - name: demo_art
+            - name: tarunm_art
         execution:
           onStart:
             - export inputNpmBuildStepName="bld_frontend"
@@ -193,7 +193,7 @@ pipelines:
         configuration:
           environmentVariables:
 #             dockerImageName: avinci-docker-local.jfrog.io/app
-            dockerImageName: 146.148.104.158:8082/docker-local/app
+            dockerImageName: 34.145.57.107:8082/docker-local/app
             dockerImageTag: ${run_number}
           inputResources:
             - name: be_gitRepo
@@ -229,7 +229,7 @@ pipelines:
         configuration:
           targetRepository: docker
           integrations:
-            - name: demo_art
+            - name: tarunm_art
           inputResources:
             - name: appl_build_info
           outputResources:
