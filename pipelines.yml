@@ -85,7 +85,7 @@ pipelines:
         configuration:
           dockerFileLocation: .
           dockerFileName: Dockerfile
-          dockerImageName: artifactory-unified.soleng-us.jfrog.team:80/artifactory/tarunm-docker-dev-local/gosvc
+          dockerImageName: tarunm-docker-dev-local.artifactory-unified.soleng-us.jfrog.team/gosvc
           dockerImageTag: ${run_number}
           inputResources:
             - name: gosvc_gitRepo_t
@@ -184,7 +184,7 @@ pipelines:
         type: Bash
         configuration:
           environmentVariables:
-            dockerImageName: artifactory-unified.soleng-us.jfrog.team:80/artifactory/tarunm-docker-dev-local/app
+            dockerImageName: tarunm-docker-dev-local.artifactory-unified.soleng-us.jfrog.team/app
             dockerImageTag: ${run_number}
           inputResources:
             - name: be_gitRepo_t
