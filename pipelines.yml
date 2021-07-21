@@ -83,6 +83,7 @@ pipelines:
       - name: bld_svc
         type: DockerBuild
         configuration:
+          affinityGroup: bldGroup
           dockerFileLocation: .
           dockerFileName: Dockerfile
           dockerImageName: tarunm-docker-dev-local.artifactory-unified.soleng-us.jfrog.team/gosvc
@@ -95,6 +96,7 @@ pipelines:
       - name: push_svc
         type: DockerPush
         configuration:
+          affinityGroup: bldGroup
           targetRepository: tarunm-docker-dev-local
           forceXrayScan: false
           failOnScan: false
