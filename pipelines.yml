@@ -86,7 +86,7 @@ pipelines:
           affinityGroup: bldGroup
           dockerFileLocation: .
           dockerFileName: Dockerfile
-          dockerImageName: tarunm-docker-dev-local.artifactory-unified.soleng-us.jfrog.team/gosvc
+          dockerImageName: docker.artifactory-unified.soleng-us.jfrog.team/gosvc_t
           dockerImageTag: ${run_number}
           inputResources:
             - name: gosvc_gitRepo_t
@@ -97,7 +97,7 @@ pipelines:
         type: DockerPush
         configuration:
           affinityGroup: bldGroup
-          targetRepository: tarunm-docker-dev-local
+          targetRepository: docker
           forceXrayScan: false
           failOnScan: false
           autoPublishBuildInfo: true
