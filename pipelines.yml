@@ -55,21 +55,21 @@ resources:
   - name: release_bundle_t
     type: ReleaseBundle
     configuration:
-      sourceDistribution: demoDist
+      sourceDistribution: Distribution
       name: demo_rb
       version: v1.0.0
 
   - name: signed_bundle_t
     type: ReleaseBundle
     configuration:
-      sourceDistribution: demoDist
+      sourceDistribution: Distribution
       name: demo_rb
       version: v1.0.0
 
   - name: distribution_rules_t
     type: DistributionRule
     configuration:
-      sourceDistribution: demoDist
+      sourceDistribution: Distribution
       serviceName: "*"
       siteName: "*"
       cityName: "*"
