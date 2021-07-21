@@ -1,72 +1,72 @@
 resources:
-  - name: gosvc_gitRepo
+  - name: gosvc_gitRepo_t
     type: GitRepo
     configuration:
       path: tarunaz/go-service
       gitProvider: tarunm_github
 
-  - name: gosvc_build_info
+  - name: gosvc_build_info_t
     type: BuildInfo
     configuration:
       sourceArtifactory: Artifactory
       buildName: svc_build
       buildNumber: 1
 
-  - name: gosvc_promoted_build_info
+  - name: gosvc_promoted_build_info_t
     type: BuildInfo
     configuration:
       sourceArtifactory: Artifactory
       buildName: svc_build
       buildNumber: 1
 
-  - name: be_gitRepo
+  - name: be_gitRepo_t
     type: GitRepo
     configuration:
       path: tarunaz/java-backend
       gitProvider: tarunm_github
 
-  - name: appl_build_info_output
+  - name: appl_build_info_output_t
     type: BuildInfo
     configuration:
       sourceArtifactory: Artifactory
       buildName: backend_build
       buildNumber: 1
 
-  - name: appl_build_info
+  - name: appl_build_info_t
     type: BuildInfo
     configuration:
       sourceArtifactory: Artifactory
       buildName: backend_build
       buildNumber: 1
 
-  - name: appl_promoted_build_info
+  - name: appl_promoted_build_info_t
     type: BuildInfo
     configuration:
       sourceArtifactory: Artifactory
       buildName: backend_build
       buildNumber: 1
 
-  - name: fe_gitRepo
+  - name: fe_gitRepo_t
     type: GitRepo
     configuration:
       path: tarunaz/vue-frontend
       gitProvider: tarunm_github
 
-  - name: release_bundle
+  - name: release_bundle_t
     type: ReleaseBundle
     configuration:
       sourceDistribution: demoDist
       name: demo_rb
       version: v1.0.0
 
-  - name: signed_bundle
+  - name: signed_bundle_t
     type: ReleaseBundle
     configuration:
       sourceDistribution: demoDist
       name: demo_rb
       version: v1.0.0
 
-  - name: distribution_rules
+  - name: distribution_rules_t
     type: DistributionRule
     configuration:
       sourceDistribution: demoDist
@@ -88,7 +88,7 @@ pipelines:
           dockerImageName: 34.145.57.107:8082/tarunm-docker-dev-local/gosvc
           dockerImageTag: ${run_number}
           inputResources:
-            - name: gosvc_gitRepo
+            - name: gosvc_gitRepo_t
           integrations:
             - name: Artifactory
 
@@ -104,18 +104,18 @@ pipelines:
           inputSteps:
             - name: bld_svc
           outputResources:
-            - name: gosvc_build_info
+            - name: gosvc_build_info_t
 
       - name: promote_svc_build
         type: PromoteBuild
         configuration:
-          targetRepository: docker
+          targetRepository: tarunm-docker-qa-local
           integrations:
             - name: Artifactory
           inputResources:
-            - name: gosvc_build_info
+            - name: gosvc_build_info_t
           outputResources:
-            - name: gosvc_promoted_build_info
+            - name: gosvc_promoted_build_info_t
 
   - name: demo_application
     steps:
@@ -127,7 +127,7 @@ pipelines:
           configFileLocation: .
           configFileName: mvn-art-config
           inputResources:
-            - name: be_gitRepo
+            - name: be_gitRepo_t
           integrations:
             - name: Artifactory
           runtime:
@@ -149,7 +149,7 @@ pipelines:
           sourceLocation: .
           repositoryName: npm-virtual
           inputResources:
-            - name: fe_gitRepo
+            - name: fe_gitRepo_t
           integrations:
             - name: Artifactory
 
@@ -187,7 +187,7 @@ pipelines:
             dockerImageName: 34.145.57.107:8082/tarunm-docker-dev-local/app
             dockerImageTag: ${run_number}
           inputResources:
-            - name: be_gitRepo
+            - name: be_gitRepo_t
               trigger: false
           inputSteps:
             - name: bld_backend
@@ -213,7 +213,7 @@ pipelines:
           inputSteps:
             - name: build_app
           outputResources:
-            - name: appl_build_info
+            - name: appl_build_info_t
 
       - name: promote_app_build
         type: PromoteBuild
@@ -222,9 +222,9 @@ pipelines:
           integrations:
             - name: Artifactory
           inputResources:
-            - name: appl_build_info
+            - name: appl_build_info_t
           outputResources:
-            - name: appl_promoted_build_info
+            - name: appl_promoted_build_info_t
 
   - name: demo_release_mgmt
     steps:
@@ -237,12 +237,12 @@ pipelines:
           sign: false
           description: "some random test description"
           inputResources:
-            - name: gosvc_promoted_build_info
+            - name: gosvc_promoted_build_info_t
               trigger: false
-            - name: appl_promoted_build_info
+            - name: appl_promoted_build_info_t
               trigger: false
           outputResources:
-            - name: release_bundle
+            - name: release_bundle_t
           releaseNotes:
             syntax: markdown
             content: |
@@ -254,14 +254,14 @@ pipelines:
         type: SignReleaseBundle
         configuration:
           inputResources:
-            - name: release_bundle
+            - name: release_bundle_t
           outputResources:
-            - name: signed_bundle
+            - name: signed_bundle_t
 
       - name: distribute
         type: DistributeReleaseBundle
         configuration:
           dryRun: false
           inputResources:
-            - name: signed_bundle
-            - name: distribution_rules
+            - name: signed_bundle_t
+            - name: distribution_rules_t
