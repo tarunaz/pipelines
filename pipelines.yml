@@ -78,7 +78,7 @@ resources:
         - "GB"
 
 pipelines:
-  - name: demo_gosvc
+  - name: demo_gosvc_t
     steps:
       - name: bld_svc
         type: DockerBuild
@@ -117,7 +117,7 @@ pipelines:
           outputResources:
             - name: gosvc_promoted_build_info_t
 
-  - name: demo_application
+  - name: demo_application_t
     steps:
       - name: bld_backend
         type: MvnBuild
@@ -226,7 +226,7 @@ pipelines:
           outputResources:
             - name: appl_promoted_build_info_t
 
-  - name: demo_release_mgmt
+  - name: demo_release_mgmt_t
     steps:
       - name: bundle
         type: CreateReleaseBundle
