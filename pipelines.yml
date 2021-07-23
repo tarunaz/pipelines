@@ -186,7 +186,7 @@ pipelines:
         type: Bash
         configuration:
           environmentVariables:
-            dockerImageName: tarunm-docker-dev-local.artifactory-unified.soleng-us.jfrog.team/app
+            dockerImageName: docker.artifactory-unified.soleng-us.jfrog.team/app_t
             dockerImageTag: ${run_number}
           inputResources:
             - name: be_gitRepo_t
@@ -220,7 +220,7 @@ pipelines:
       - name: promote_app_build
         type: PromoteBuild
         configuration:
-          targetRepository: tarunm-docker-qa-local
+          targetRepository: docker
           integrations:
             - name: Artifactory
           inputResources:
